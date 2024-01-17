@@ -1,0 +1,8 @@
+# config.toml
+
+# Grid size
+rows = 20
+cols = 20
+
+# Timeout in milliseconds
+timeout = 500
