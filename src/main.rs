@@ -39,11 +39,13 @@ impl Config {
 
 fn main() -> Result<(), Box<dyn Error>> {
     let conf = Config::load("config.toml")?;
+    let mut generation :u64  = 0;
 
     let mut grid = initialize_grid(&conf);
 
     loop {
-        print_grid(&grid);
+        generation += 1;
+        print_grid(&generation, &grid);
         update_grid(&mut grid);
         thread::sleep(time::Duration::from_millis(conf.timeout as u64));
     }
@@ -77,7 +79,7 @@ fn initialize_grid(conf: &Config) -> Vec<Vec<bool>> {
 }
 
 // Function to print the current state of the grid over the previous state
-fn print_grid(grid: &Vec<Vec<bool>>) {
+fn print_grid(generation: &u64, grid: &Vec<Vec<bool>>) {
     // ANSI escape code to move the cursor to the top-left corner
     print!("\x1B[H");
 
@@ -91,7 +93,7 @@ fn print_grid(grid: &Vec<Vec<bool>>) {
         }
         println!();
     }
-    println!();
+    println!("Generation: {generation}");
     // Flush the output to ensure it is displayed immediately
     io::stdout().flush().unwrap();
 }
